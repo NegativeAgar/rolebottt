@@ -137,5 +137,6 @@ async def info(ctx, user: discord.User):
         emb.set_footer(text= 'Смотрит статистику {}'.format(ctx.author.name), icon_url =ctx.author.avatar_url)
         await ctx.send(embed=emb)
 
-#bot.run('')
+
 client = os.environ.get('BOT_TOKEN')
+bot.run(str(token))

@@ -1,0 +1,5 @@
+discrod.py
+websokets
+aiohttp
+chardet
+config

@@ -1,6 +1,6 @@
 import discord
 from discord import utils
- 
+import os
 import config
  
 class MyClient(discord.Client):
@@ -47,4 +47,4 @@ class MyClient(discord.Client):
  
 # RUN
 client = MyClient()
-client.run(config.token)
+client = os.environ.get('NjcwMjk4NzkxODAyNTY4NzI0.Xix9OA.6Pa1RVBhlJmvaTEtLwfdNZh_r0w')

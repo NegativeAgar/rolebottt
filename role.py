@@ -170,5 +170,6 @@ async def info(ctx,user: discord.User):
     emb.add_field(name='ID пользователя:', value=user.id,inline=False)
     emb.set_footer(text= 'Смотрит статистику {}'.format(ctx.author.name), icon_url =ctx.author.avatar_url)
     await ctx.send(embed=emb)
+token = os.environ("TOKEN")
+bot.run(token)
 
-bot.run(config.token)

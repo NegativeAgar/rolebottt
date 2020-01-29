@@ -194,7 +194,7 @@ async def info(ctx,user: discord.Member):
     emb.set_footer(text= 'Смотрит {}'.format(ctx.author.name), icon_url =ctx.author.avatar_url)
     await ctx.send(embed=emb)
 
-token = os.environ("TOKEN")
+token = os.environ.get("TOKEN")
 bot.run(token)
 
 

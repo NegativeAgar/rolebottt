@@ -109,7 +109,7 @@ async def comm(ctx):
     await ctx.send(embed= emb)
 # mute
 @bot.command()
-async def mute(ctx, user: discord.Member, *,reason=None):
+async def mute(ctx, user: discord.Member,reason=None):
     role = discord.utils.get(user.guild.roles, name='Helper')
     if role in user.roles:
         emb = discord.Embed(title="Выдан мут пользователю!", colour=discord.Colour.red())

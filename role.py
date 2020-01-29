@@ -195,6 +195,6 @@ async def info(ctx,user: discord.Member):
     await ctx.send(embed=emb)
 
 token = os.environ.get("TOKEN")
-bot.run(token)
+bot.run(str(token))
 
 

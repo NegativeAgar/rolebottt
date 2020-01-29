@@ -109,9 +109,8 @@ async def comm(ctx):
     await ctx.send(embed= emb)
 # mute
 @bot.command()
+@commands.has_permissions(administrator = True)
 async def mute(ctx, user: discord.Member,reason=None):
-    role = discord.utils.get(user.guild.roles, name='Helper')
-    if role in user.roles:
         emb = discord.Embed(title="Выдан мут пользователю!", colour=discord.Colour.red())
         await ctx.channel.purge(limit=1)
         emb.set_author(name= user.name, icon_url=user.avatar_url)
@@ -121,15 +120,10 @@ async def mute(ctx, user: discord.Member,reason=None):
         emb.add_field(name='Дата и время:', value=time_string,inline=False)
         emb.set_footer(text= 'Замучен Администратором {}'.format(ctx.author.name), icon_url =ctx.author.avatar_url)
         await ctx.send(embed=emb)
-    else:
-        author = ctx.message.author
-        await ctx.send('У вас {} нету прав доступа!'.format(author.mention))
-
 # unmute
 @bot.command()
+@commands.has_permissions(administrator = True)
 async def unmute(ctx, user: discord.Member):
-    role = discord.utils.get(user.guild.roles, name='Helper')
-    if role in user.roles:
         emb = discord.Embed(title="Пользователь размучен!", colour=discord.Colour.green())
         await ctx.channel.purge(limit=1)
         role = discord.utils.get(user.guild.roles, id=670630763716149248)
@@ -137,9 +131,6 @@ async def unmute(ctx, user: discord.Member):
         emb.set_author(name= user.name, icon_url=user.avatar_url)
         emb.set_footer(text= 'Мут снят Администратором {}'.format(ctx.author.name), icon_url =ctx.author.avatar_url)
         await ctx.send(embed=emb)
-    else:
-        author = ctx.message.author
-        await ctx.send('У вас {} нету прав доступа!'.format(author.mention))
 # ban
 @bot.command()
 @commands.has_permissions(administrator = True)

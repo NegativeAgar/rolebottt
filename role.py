@@ -92,7 +92,7 @@ async def on_member_join(member: discord.Member):
     channel = bot.get_channel(658746681172688900)
     role = discord.utils.get(member.guild.roles, id=670271810079555584)
     await member.add_roles(role)
-    await channel.send(embed= discord.Embed(description=f'Наш новый друг  ``{member.name}``!'
+    await channel.send(embed= discord.Embed(description=f"Наш новый друг  ``{member.name}``!"
                                                         f"Приветствую, только что зашел в Discord сервер Ruh'и? Ну тогда залетай в голосовой чат, "
                                                         f"возможно там сейчас сидит сам Ruha..:scream_cat: "
                                                         f"Выбирай сервер на котором ты играешь, для этого тебе нужно зайти в #👏получение-роли👏 , и жми "

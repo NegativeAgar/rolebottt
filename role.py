@@ -5,7 +5,6 @@ import time
 import os
 
 
-
 named_tuple = time.localtime()
 time_string = time.strftime("%d.%m.%Y - %H:%M", named_tuple)
 
@@ -51,8 +50,8 @@ async  def ahelp(ctx):
         emb.add_field(name="Забанить", value="{}ban [ID пользователя] [причина бана]".format(prefix),inline=False)
         emb.add_field(name="Разбанить", value="{}unban [ID пользователя] (в разработке)".format(prefix),inline=False)
         emb.add_field(name="Кикинуть", value="{}kick [ID пользователя] [причина кика]".format(prefix),inline=False)
-        emb.add_field(name="Дать мут", value="{}mute [ID пользователя] [причина мута]".format(prefix),inline=False)
-        emb.add_field(name="Снять мут", value="{}unmute [ID пользователя]".format(prefix),inline=False)
+        emb.add_field(name="Дать мут", value="{}mute [ID пользователя] [причина мута] | Хеллпер".format(prefix),inline=False)
+        emb.add_field(name="Снять мут", value="{}unmute [ID пользователя] | Хеллпер".format(prefix),inline=False)
         emb.add_field(name="Админ команды:", value="{}ahelp".format(prefix),inline=False)
 
         await ctx.send(embed=emb)
@@ -111,7 +110,10 @@ async def comm(ctx):
     await ctx.send(embed= emb)
 # mute
 @bot.command()
-async def mute(ctx,user: discord.Member, reason=None,):
+async def mute(ctx,user: discord.Member, reason=None):
+    author=ctx.message.author
+    role_names=[role.name for role in author.roles]
+    if "Хелпер" in role_names:
         emb = discord.Embed(title="Выдан мут пользователю!", colour=discord.Colour.red())
         await ctx.channel.purge(limit=1)
         emb.set_author(name= user.name, icon_url=user.avatar_url)
@@ -121,11 +123,16 @@ async def mute(ctx,user: discord.Member, reason=None,):
         emb.add_field(name='Дата и время:', value=time_string,inline=False)
         emb.set_footer(text= 'Замучен Администратором {}'.format(ctx.author.name), icon_url =ctx.author.avatar_url)
         await ctx.send(embed=emb)
-
+    else:
+        author = ctx.message.author
+        await ctx.send(f'{author.mention} У тебя недостаточно прав!')
 
 # unmute
 @bot.command()
 async def unmute(ctx, user: discord.Member):
+    author=ctx.message.author
+    role_names=[role.name for role in author.roles]
+    if "Хелпер" in role_names:
         emb = discord.Embed(title="Пользователь размучен!", colour=discord.Colour.green())
         await ctx.channel.purge(limit=1)
         role = discord.utils.get(user.guild.roles, id=670630763716149248)
@@ -133,6 +140,9 @@ async def unmute(ctx, user: discord.Member):
         emb.set_author(name= user.name, icon_url=user.avatar_url)
         emb.set_footer(text= 'Мут снят Администратором {}'.format(ctx.author.name), icon_url =ctx.author.avatar_url)
         await ctx.send(embed=emb)
+    else:
+        author = ctx.message.author
+        await ctx.send(f'{author.mention} У тебя недостаточно прав!')
 # ban
 @bot.command()
 @commands.has_permissions(administrator = True)
@@ -186,8 +196,9 @@ async def info(ctx,user: discord.Member):
 
 @bot.command()
 async def ainfo(ctx,user: discord.Member):
-    role=discord.utils.get(user.guild.roles, id=672523999351144448)
-    if role in user.roles:
+    author = ctx.message.author
+    role_names=[role.name for role in author.roles]
+    if "Хелпер" in role_names:
         emb = discord.Embed(title="Статистика пользователя:", colour=discord.Colour.blurple())
         await ctx.channel.purge(limit=1)
         emb.set_author(name=user.name)
@@ -209,6 +220,7 @@ async def ainfo(ctx,user: discord.Member):
         author = ctx.message.author
         await ctx.send(f'{author.mention} У тебя недостаточно прав!')
 
+        
 
 token = os.environ.get("TOKEN")
 bot.run(str(token))

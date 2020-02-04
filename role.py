@@ -6,7 +6,7 @@ import os
 
 
 named_tuple = time.localtime()
-time_string = time.strftime("%d.%m.%Y-%H:%M:%S", named_tuple)
+time_string = time.strftime("%d.%m.%Y - %H:%M", named_tuple)
 
 
 prefix = "."
@@ -43,7 +43,7 @@ async  def help(ctx):
 async  def ahelp(ctx):
         emb = discord.Embed(title= "Админ команды:", colour= discord.Colour.orange())
 
-        await ctx.channel.purge(limit=10)
+        await ctx.channel.purge(limit=1)
 
         emb.add_field(name="Очистить чат", value="{}clear либо .clear (число - сколько удалить сообщений)".format(prefix),inline=False)
         emb.add_field(name="Информация про пользователя", value="{}ainfo (ID пользователя)".format(prefix),inline=False)
@@ -58,7 +58,7 @@ async  def ahelp(ctx):
 # clear
 @bot.command()
 @commands.has_permissions(administrator = True)
-async def clear(ctx,count=100):
+async def clear(ctx,count=20):
     author = ctx.message.author
     await ctx.channel.purge(limit=count)
     await ctx.send(embed= discord.Embed(description=f'Чат очистил администратор: {author.mention}'))
@@ -92,8 +92,7 @@ async def on_member_join(member: discord.Member):
     channel = bot.get_channel(658746681172688900)
     role = discord.utils.get(member.guild.roles, id=670271810079555584)
     await member.add_roles(role)
-    await channel.send(embed= discord.Embed(description=f"Наш новый друг  ``{member.name}``!",color=discord.Colour.green()))
-    await channel.send(embed= discord.Embed(description=f"Приветствую, только что зашел в Discord сервер Ruh'и? Ну тогда залетай в голосовой чат, "
+    await channel.send(embed= discord.Embed(description=f"Приветствую {member.name},ты только что зашел в Discord сервер Ruh'и? Ну тогда залетай в голосовой чат, "
                                                         f"возможно там сейчас сидит сам Ruha..:scream_cat: "
                                                         f"Выбирай сервер на котором ты играешь, для этого тебе нужно зайти в #👏получение-роли👏 , и жми "
                                                         f"на смайлик того сервера на котором ты играешь, а потом... Ты получишь роль, которая будет видна всем!"
@@ -111,7 +110,8 @@ async def comm(ctx):
     await ctx.send(embed= emb)
 # mute
 @bot.command()
-async def mute(ctx, user: discord.Member, *,reason=None):
+@commands.has_permissions(administrator = True)
+async def mute(ctx, user: discord.Member,reason=None):
         emb = discord.Embed(title="Выдан мут пользователю!", colour=discord.Colour.red())
         await ctx.channel.purge(limit=1)
         emb.set_author(name= user.name, icon_url=user.avatar_url)
@@ -124,6 +124,7 @@ async def mute(ctx, user: discord.Member, *,reason=None):
 
 # unmute
 @bot.command()
+@commands.has_permissions(administrator = True)
 async def unmute(ctx, user: discord.Member):
         emb = discord.Embed(title="Пользователь размучен!", colour=discord.Colour.green())
         await ctx.channel.purge(limit=1)
@@ -172,7 +173,7 @@ async def kick(ctx, user: discord.Member,reason=None):
 #info
 @bot.command()
 async def info(ctx,user: discord.Member):
-    emb = discord.Embed(title="Статистика пользователя.", colour=discord.Colour.blue())
+    emb = discord.Embed(title="Статистика пользователя:", colour=discord.Colour.blue())
     await ctx.channel.purge(limit=1)
     emb.set_author(name=user.name)
     emb.add_field(name='Имя:', value=user.name)
@@ -186,7 +187,7 @@ async def info(ctx,user: discord.Member):
 @bot.command()
 @commands.has_permissions(administrator = True, manage_roles=True)
 async def ainfo(ctx,user: discord.Member):
-    emb = discord.Embed(title="Статистика пользователя", colour=discord.Colour.blurple())
+    emb = discord.Embed(title="Статистика пользователя:", colour=discord.Colour.blurple())
     await ctx.channel.purge(limit=1)
     emb.set_author(name=user.name)
     emb.add_field(name='Имя:', value=user.name)
@@ -196,9 +197,9 @@ async def ainfo(ctx,user: discord.Member):
     emb.add_field(name="Аккаунт создан:", value=str(user.created_at)[:10])
     role=discord.utils.get(user.guild.roles, id=670630763716149248)
     if role in user.roles:
-        emb.add_field(name='Мут:', value='Есть')
+        emb.add_field(name='Мут:', value='Да')
     else:
-        emb.add_field(name='Мут:', value='Нету')
+        emb.add_field(name='Мут:', value='Нет')
     emb.set_thumbnail(url= str(user.avatar_url))
     emb.add_field(name='Играет в:',value=user.activity)
     emb.set_footer(text= 'Смотрит {}'.format(ctx.author.name), icon_url =ctx.author.avatar_url)

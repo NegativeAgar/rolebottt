@@ -5,6 +5,7 @@ import time
 import os
 
 
+
 named_tuple = time.localtime()
 time_string = time.strftime("%d.%m.%Y - %H:%M", named_tuple)
 
@@ -46,7 +47,7 @@ async  def ahelp(ctx):
         await ctx.channel.purge(limit=1)
 
         emb.add_field(name="Очистить чат", value="{}clear либо .clear (число - сколько удалить сообщений)".format(prefix),inline=False)
-        emb.add_field(name="Информация про пользователя", value="{}ainfo (ID пользователя)".format(prefix),inline=False)
+        emb.add_field(name="Информация про пользователя", value="{}ainfo (ID пользователя) | Хеллпер".format(prefix),inline=False)
         emb.add_field(name="Забанить", value="{}ban [ID пользователя] [причина бана]".format(prefix),inline=False)
         emb.add_field(name="Разбанить", value="{}unban [ID пользователя] (в разработке)".format(prefix),inline=False)
         emb.add_field(name="Кикинуть", value="{}kick [ID пользователя] [причина кика]".format(prefix),inline=False)
@@ -110,8 +111,7 @@ async def comm(ctx):
     await ctx.send(embed= emb)
 # mute
 @bot.command()
-@commands.has_permissions(administrator = True)
-async def mute(ctx, user: discord.Member,reason=None):
+async def mute(ctx,user: discord.Member, reason=None,):
         emb = discord.Embed(title="Выдан мут пользователю!", colour=discord.Colour.red())
         await ctx.channel.purge(limit=1)
         emb.set_author(name= user.name, icon_url=user.avatar_url)
@@ -122,9 +122,9 @@ async def mute(ctx, user: discord.Member,reason=None):
         emb.set_footer(text= 'Замучен Администратором {}'.format(ctx.author.name), icon_url =ctx.author.avatar_url)
         await ctx.send(embed=emb)
 
+
 # unmute
 @bot.command()
-@commands.has_permissions(administrator = True)
 async def unmute(ctx, user: discord.Member):
         emb = discord.Embed(title="Пользователь размучен!", colour=discord.Colour.green())
         await ctx.channel.purge(limit=1)
@@ -185,25 +185,30 @@ async def info(ctx,user: discord.Member):
     await ctx.send(embed=emb)
 
 @bot.command()
-@commands.has_permissions(administrator = True, manage_roles=True)
 async def ainfo(ctx,user: discord.Member):
-    emb = discord.Embed(title="Статистика пользователя:", colour=discord.Colour.blurple())
-    await ctx.channel.purge(limit=1)
-    emb.set_author(name=user.name)
-    emb.add_field(name='Имя:', value=user.name)
-    emb.add_field(name="Зашёл на канал:", value=str(user.joined_at)[:10])
-    emb.add_field(name='Статус:', value=user.status)
-    emb.add_field(name='ID пользователя:', value=user.id,inline=False)
-    emb.add_field(name="Аккаунт создан:", value=str(user.created_at)[:10])
-    role=discord.utils.get(user.guild.roles, id=670630763716149248)
+    role=discord.utils.get(user.guild.roles, id=672523999351144448)
     if role in user.roles:
-        emb.add_field(name='Мут:', value='Да')
+        emb = discord.Embed(title="Статистика пользователя:", colour=discord.Colour.blurple())
+        await ctx.channel.purge(limit=1)
+        emb.set_author(name=user.name)
+        emb.add_field(name='Имя:', value=user.name)
+        emb.add_field(name="Зашёл на канал:", value=str(user.joined_at)[:10])
+        emb.add_field(name='Статус:', value=user.status)
+        emb.add_field(name='ID пользователя:', value=user.id,inline=False)
+        emb.add_field(name="Аккаунт создан:", value=str(user.created_at)[:10])
+        role=discord.utils.get(user.guild.roles, id=670630763716149248)
+        if role in user.roles:
+            emb.add_field(name='Мут:', value='Да')
+        else:
+            emb.add_field(name='Мут:', value='Нет')
+        emb.set_thumbnail(url= str(user.avatar_url))
+        emb.add_field(name='Играет в:',value=user.activity)
+        emb.set_footer(text= 'Смотрит {}'.format(ctx.author.name), icon_url =ctx.author.avatar_url)
+        await ctx.send(embed=emb)
     else:
-        emb.add_field(name='Мут:', value='Нет')
-    emb.set_thumbnail(url= str(user.avatar_url))
-    emb.add_field(name='Играет в:',value=user.activity)
-    emb.set_footer(text= 'Смотрит {}'.format(ctx.author.name), icon_url =ctx.author.avatar_url)
-    await ctx.send(embed=emb)
+        author = ctx.message.author
+        await ctx.send(f'{author.mention} У тебя недостаточно прав!')
+
 
 token = os.environ.get("TOKEN")
 bot.run(str(token))

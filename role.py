@@ -132,6 +132,8 @@ async def mute(ctx, user: discord.Member, reason=None):
     if "Хелпер" in role_names:
         emb=discord.Embed(title="Выдан мут пользователю!", colour=discord.Colour.red())
         await ctx.channel.purge(limit=1)
+        role=discord.utils.get(user.guild.roles, id=670630763716149248)
+        await user.add_roles(role)
         emb.set_author(name=user.name, icon_url=user.avatar_url)
         emb.add_field(name='Имя:', value=user.name)
         emb.add_field(name='ID пользователя:', value=user.id)

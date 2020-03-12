@@ -279,12 +279,6 @@ async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=game)
     print("Бот запущен!")
     
-    bot.loop.create_task(rainbowrole(rainbowrolename))
-    print('Logged in as')
-    print(bot.user.name)
-    print(bot.user.id)
-    print('Ready.')
-    print('------------')
         
 
         

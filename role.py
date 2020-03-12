@@ -23,12 +23,7 @@ cr={'канал', 'канал рухи', 'Канал', 'Канал рухи', '�
 cn=['канал', 'привет']
 
 
-# Запуск
-@bot.event
-async def on_ready():
-    game=discord.Game("Mobile SA-MP")
-    await bot.change_presence(status=discord.Status.online, activity=game)
-    print("Бот запущен!")
+
 
 
 # Команда help
@@ -280,6 +275,10 @@ async def rainbowrole(role):
 
 @bot.event
 async def on_ready():
+    game=discord.Game("Mobile SA-MP")
+    await bot.change_presence(status=discord.Status.online, activity=game)
+    print("Бот запущен!")
+    
     bot.loop.create_task(rainbowrole(rainbowrolename))
     print('Logged in as')
     print(bot.user.name)

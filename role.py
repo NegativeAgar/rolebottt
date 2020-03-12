@@ -90,7 +90,7 @@ async def ruha(ctx, arg):
 # отключение от канала
 @bot.event
 async def on_member_remove(user: discord.Member):
-    channel=bot.get_channel(658746681172688900)
+    channel=bot.get_channel(687640950931193866)
     if on_member_remove == user.kick or on_member_remove == user.ban:
         await channel.send(embed=discord.Embed(description=f'Нас покинул``{user.name}``, Руха растроился :(',
                                                color=discord.Colour.red()))
@@ -99,15 +99,11 @@ async def on_member_remove(user: discord.Member):
 # Подключение к каналу
 @bot.event
 async def on_member_join(member: discord.Member):
-    channel=bot.get_channel(658746681172688900)
+    channel=bot.get_channel(687640950931193866)
     role=discord.utils.get(member.guild.roles, id=670271810079555584)
     await member.add_roles(role)
     await channel.send(embed=discord.Embed(
-        description=f"Приветствую {member.name},ты только что зашел в Discord сервер Ruh'и? Ну тогда залетай в голосовой чат, "
-                    f"возможно там сейчас сидит сам Ruha..:scream_cat: "
-                    f"Выбирай сервер на котором ты играешь, для этого тебе нужно зайти в #👏получение-роли👏 , и жми "
-                    f"на смайлик того сервера на котором ты играешь, а потом... Ты получишь роль, которая будет видна всем!"
-                    f"Желаю удачи, в дальнейшем будут конкурсы!:wave:", color=discord.Colour.green()))
+        description=f"Приветствую {member.name},ты зашел на Discord сервер Ruh'и!", color=discord.Colour.green()))
 
 
 # commands

@@ -254,7 +254,7 @@ async def rainbowrole(role):
             print("detected role")
             while not bot.is_closed():
                 try:
-                    await role.edit(color=random.choice(colours))
+                    await xxrole.edit(color=random.choice(colours))
                 except Exception:
                     print("не может редактировать роль, убедитесь, что роль бота находится над ролью радуги и у которой есть права на редактирование ролей")
                     pass

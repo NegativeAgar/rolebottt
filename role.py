@@ -239,46 +239,14 @@ async def ainfo(ctx, user: discord.Member):
         author=ctx.message.author
         await ctx.send(f'{author.mention} У тебя недостаточно прав!')
 
-        
-serverid = 658746680711184414
-rainbowrolename = "Глава"
-delay = 0.2
 
-
-
-colours = [discord.Color.dark_orange(),discord.Color.orange(),discord.Color.dark_gold(),discord.Color.gold(),discord.Color.dark_magenta(),discord.Color.magenta(),discord.Color.red(),discord.Color.dark_red(),discord.Color.blue(),discord.Color.dark_blue(),discord.Color.teal(),discord.Color.dark_teal(),discord.Color.green(),discord.Color.dark_green(),discord.Color.purple(),discord.Color.dark_purple()]
-
-async def rainbowrole(role):
-    for role in bot.get_guild(serverid).roles:
-        if str(role) == str(rainbowrolename):
-            print("detected role")
-            while not bot.is_closed():
-                try:
-                    await xxrole.edit(color=random.choice(colours))
-                except Exception:
-                    print("не может редактировать роль, убедитесь, что роль бота находится над ролью радуги и у которой есть права на редактирование ролей")
-                    pass
-                await asyncio.sleep(delay)
-    print('роль с таким именем "' + rainbowrolename +'" не найдено')
-    print("creating the role...")
-    try:
-        await bot.get_guild(serverid).create_role(reason="Created rainbow role", name=rainbowrolename)
-        print("role created!")
-        await asyncio.sleep(2)
-        bot.loop.create_task(rainbowrole(rainbowrolename))
-    except Exception as e:
-        print("couldn't create the role. Make sure the bot have the perms to edit roles")
-        print(e)
-        pass
-        await asyncio.sleep(10)
-        bot.loop.create_task(rainbowrole(rainbowrolename))
 
 @bot.event
 async def on_ready():
     game=discord.Game("Mobile SA-MP")
     await bot.change_presence(status=discord.Status.online, activity=game)
     print("Бот запущен!")
-    bot.loop.create_task(rainbowrole(rainbowrolename))
+
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)

@@ -36,7 +36,7 @@ async def ip(ctx):
 # отключение от канала
 @bot.event
 async def on_member_remove(user: discord.Member):
-    channel = bot.get_channel(709874537688465539)
+    channel = bot.get_channel(687640950931193866)
     await channel.send(embed=discord.Embed(description=f'Нас покинул `{user.name}`, Руха растроился :(',
                                                color=discord.Colour.red()))
 
@@ -44,10 +44,9 @@ async def on_member_remove(user: discord.Member):
 # Подключение к каналу
 @bot.event
 async def on_member_join(member: discord.Member):
-    channel = bot.get_channel(709874537688465539)
+    channel = bot.get_channel(687640950931193866)
     role = discord.utils.get(member.guild.roles, id=670271810079555584)
     await member.add_roles(role)
-    rules = 709874537688465539
     emb = discord.Embed(title="Приветствуем тебя на Discrod сервере Ruh'i", colour=discord.Colour.orange())
     emb.add_field(name='Welcom!',value='Рады видеть тебя здесь {} 🤚'.format(member.mention),inline=False)
     emb.add_field(name='Информация',value='● Пожалуйста, прочитайте наши `#правила`'
@@ -133,5 +132,6 @@ async def on_ready():
     print('Ready.')
     print('------------')
 
-#token = os.environ.get("TOKEN")
-#bot.run(str(token))
+token = os.environ.get("TOKEN")
+bot.run(str(token))
+

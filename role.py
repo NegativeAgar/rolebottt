@@ -6,8 +6,8 @@ import random
 import time
 import os
 
-named_tuple = time.localtime()
-time_string = time.strftime("%d.%m.%Y - %H:%M", named_tuple)
+
+time_string = time.strftime("%A %X")
 
 prefix = "."
 bot = commands.Bot(command_prefix=prefix)
@@ -30,108 +30,190 @@ async def clear(ctx, count=20):
 # Чат бот
 @bot.command()
 async def ip(ctx):
-    author = ctx.message.author
-    await ctx.send(f"Вот держи {author.mention}! SanTrope #02 - `51.83.146.10:8888`, сервер где играет Руха, скорее залетай к нему!")
+        author = ctx.author
+        await ctx.send(f"Вот держи {author.mention}! SanTrope #02 - `51.83.146.10:8888`, сервер где играет Руха, скорее залетай к нему!")
+
+
 
 # отключение от канала
 @bot.event
 async def on_member_remove(user: discord.Member):
     channel = bot.get_channel(687640950931193866)
-    await channel.send(embed=discord.Embed(description=f'Нас покинул `{user.name}`, Руха растроился :(',
-                                               color=discord.Colour.red()))
-
+    await channel.send(embed=discord.Embed(description=f'Нас покинул `{user.name}`, Руха растроился :(',color=discord.Colour.red()))
 
 # Подключение к каналу
 @bot.event
 async def on_member_join(member: discord.Member):
-    channel = bot.get_channel(687640950931193866)
+    channel = bot.get_channel(709874537688465539)
     role = discord.utils.get(member.guild.roles, id=670271810079555584)
     await member.add_roles(role)
     emb = discord.Embed(title="Приветствуем тебя на Discrod сервере Ruh'i", colour=discord.Colour.orange())
     emb.add_field(name='Welcom!',value='Рады видеть тебя здесь {} 🤚'.format(member.mention),inline=False)
     emb.add_field(name='Информация',value='● Пожалуйста, прочитайте наши `#правила`'
                   '\n● Выберите сервер на котором, вы играете `#сервер`'
-                  "\n● Посмотреть новое видео Ruh'i `#новые-ролики`",inline=False)
+                  "\n● Посмотреть новые видео Ruh'i `#новые-ролики`"
+                  "\n● Заходи на канал #chat и общайся",inline=False)
     emb.add_field(name='Нужна помощь?',value='Пишите в раздел `#помощь`')
     await channel.send(embed=emb)
-    #await channel.send(embed=discord.Embed(description=f"Приветствую {member.name},ты зашел на Discord сервер Ruh'и!"
-
-
 
 
 
 # commands
 @bot.command()
 async def help(ctx):
-    emb = discord.Embed(title="Помощь по боту", colour=discord.Colour.orange())
-    await ctx.channel.purge(limit=1)
-    emb.add_field(name='Команды:',value='`.info` - Посмотреть статистику (Упомянуть пользователя - "@")'
-                        '\n`.ip` - Сервер где играет Руха!', inline=False)
-    await ctx.send(embed=emb)
-
-emoji = '✅'
-
-
-# ban
-@bot.command()
-@commands.has_permissions(administrator=True)
-async def ban(ctx, user: discord.Member):
-    author = ctx.message.author
-    #await ctx.channel.purge(limit=1)
-    await user.ban(reason=1)
-    await author.add_reaction(":zap:")
-
-
-# kick
-
-@bot.command()
-async def kick(ctx, user: discord.Member, reason=None):
-    author = ctx.message.author
-    role_names = [role.name for role in author.roles]
-    if "Хелпер" in role_names:
-        emb = discord.Embed(title='Пользаватель кикнут!', colour=discord.Colour.red())
         await ctx.channel.purge(limit=1)
-        emb.set_author(name=user.name, icon_url=user.avatar_url)
-        emb.add_field(name='Имя:', value=user.name)
-        await user.kick(reason=reason)
-        emb.add_field(name='ID пользователя:', value=user.id)
-        emb.add_field(name='Причина:', value=reason, inline=False)
-        emb.add_field(name='Дата и время:', value=time_string)
-        emb.set_footer(text='Кикнут Администратором {}'.format(ctx.author.name), icon_url=ctx.author.avatar_url)
+        emb = discord.Embed(title="Помощь по боту", colour=discord.Colour.orange())
+        emb.add_field(name='Команды:',value='`.info` - Посмотреть статистику (Упомянуть пользователя - "@")'
+                            '\n`.ip` - Сервер где играет Руха!', inline=False)
         await ctx.send(embed=emb)
-    else:
-        author = ctx.message.author
-        await ctx.send(f'{author.mention} У тебя недостаточно прав!')
+
+
 
 # info
 @bot.command()
 async def info(ctx, user: discord.Member):
-    emb = discord.Embed(title="Статистика пользователя:", colour=discord.Colour.blue())
+    emb = discord.Embed(title="Статистика `{}`".format(user.name), colour=discord.Colour.blue())
     await ctx.channel.purge(limit=1)
-    emb.set_author(name=user.name)
     emb.add_field(name='Имя:', value=user.name)
     emb.add_field(name="Зашёл на канал:", value=str(user.joined_at)[:10])
-    emb.add_field(name='Статус:', value=user.status)
+    #emb.add_field(name='Статус:', value=user.status)
     emb.add_field(name='ID пользователя:', value=user.id, inline=False)
     emb.set_thumbnail(url=str(user.avatar_url))
     emb.set_footer(text='Смотрит {}'.format(ctx.author.name), icon_url=ctx.author.avatar_url)
     await ctx.send(embed=emb)
 
 
+@bot.command()
+async def kick(ctx, user:discord.Member,*,reason=None):
+    author = ctx.author
+    role_names = [role.name for role in author.roles]
+    if ("Модератор" in role_names):
+        channel = bot.get_channel(710559011505700945)
+        await user.kick(reason=reason)
+        emb = discord.Embed(title="`{}` исключен".format(user.name), colour=discord.Colour.red())
+        emb.add_field(name="Причина:", value=reason,inline=False)
+        emb.add_field(name='ID пользователя:', value=user.id)
+        emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
+        emb.set_thumbnail(url=str(user.avatar_url))
+        emb.set_footer(text=time_string)
+        await channel.send(embed=emb)
 
+@bot.command()
+async def gunban(ctx, user:discord.abc.User):
+    channel = bot.get_channel(710559011505700945)
+    await user.unban(reason=1)
+    emb = discord.Embed(title="`{}` разбанен".format(user.name), colour=discord.Colour.red())
+    emb.add_field(name='ID пользователя:', value=user.id)
+    emb.add_field(name='Время:', value=time_string)
+    emb.set_thumbnail(url=str(user.avatar_url))
+    emb.set_footer(text='Наказание снял {}'.format(ctx.author.name), icon_url=ctx.author.avatar_url)
+    await channel.send(embed=emb)
+
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def ban(ctx, user:discord.Member,*,reason=None):
+        await user.ban(reason=reason, delete_message_days=1)
+        channel = bot.get_channel(710559011505700945)
+        emb = discord.Embed(title="`{}` забанен".format(user.name), colour=discord.Colour.red())
+        emb.add_field(name="Причина:", value=reason,inline=False)
+        emb.add_field(name='ID пользователя:', value=user.id)
+        emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
+        emb.set_thumbnail(url=str(user.avatar_url))
+        emb.set_footer(text='{}'.format(time_string))
+        await channel.send(embed=emb)
+
+
+@bot.command()
+async def mute(ctx, user:discord.Member,*,time1=120.00):
+    author = ctx.author
+    role_names = [role.name for role in author.roles]
+    if ("Модератор" in role_names):
+        role = discord.utils.get(user.guild.roles, id=710558272846823518)
+        channel = bot.get_channel(710559011505700945)
+        await user.add_roles(role)
+        emb = discord.Embed(title="{} заглушен".format(user.name), colour=discord.Colour.red())
+        emb.add_field(name='ID пользователя:', value="{}".format(user.id))
+        emb.add_field(name='Длительность:', value="{} секунд".format(time1))
+        emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
+        emb.set_thumbnail(url=str(user.avatar_url))
+        emb.set_footer(text='{}'.format(time_string))
+        await channel.send(embed=emb)
+        time.sleep(time1)
+        emb = discord.Embed(title="{} заглушка снята".format(user.name), colour=discord.Colour.orange())
+        emb.add_field(name='ID пользователя:', value="{}".format(user.id))
+        emb.add_field(name='Модератор', value="Auto")
+        emb.set_thumbnail(url=str(user.avatar_url))
+        emb.set_footer(text='{}'.format(time_string))
+        await channel.send(embed=emb)
+        await user.remove_roles(role)
+
+@bot.command()
+async def unmute(ctx,user:discord.Member):
+    author = ctx.author
+    role_names = [role.name for role in author.roles]
+    if ("Модератор" in role_names):
+        channel = bot.get_channel(710559011505700945)
+        role = discord.utils.get(user.guild.roles, id=710558272846823518)
+        emb = discord.Embed(title="{} заглушка снята".format(user.name), colour=discord.Colour.orange())
+        emb.add_field(name='ID пользователя:', value="{}".format(user.id))
+        emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
+        emb.set_thumbnail(url=str(user.avatar_url))
+        emb.set_footer(text=time_string)
+        await channel.send(embed=emb)
+        await user.remove_roles(role)
+    else:
+        print('отказано')
+
+reacit = [".ban",".mute",".kick",".unmute"]
+AntiMat = ["ПИДОР","ХУЙНЯ","ЕБАЛ","СДОХНИ","БЛЯДЬ","ХУЙЛО","ебал","нахуй","пизда","ПИЗДА","хуй"]
+AntiLink = ["https://","http://"]
+@bot.event
+async def on_message(msg):
+    author = msg.author
+    channel = msg.channel
+    role_names = [role.name for role in author.roles]
+    if ("Модератор" in role_names):
+        return
+    else:
+        for i in AntiMat:
+            if i in msg.content:
+                await msg.channel.purge(limit=1)
+                message1 = f'{author.mention} _**Не ругайтесь!**_'
+                await channel.send(message1)
+
+#anti lin
+    if ("Модератор" in role_names):
+        return
+    else:
+        for i in AntiLink:
+            if i in msg.content:
+                await msg.channel.purge(limit=1)
+                message1 = f'{author.mention} _**Ссылки запрещены!**_'
+                await channel.send(message1)
+
+#ban reaction
+    for i in reacit:
+        if i in msg.content:
+            await msg.add_reaction('✅')
+
+
+    await bot.process_commands(msg)
+#end
 
 @bot.event
 async def on_ready():
-    game = discord.Game("SA-MP Mobile")
+    game = discord.Game("Помощь [.help] ")
     await bot.change_presence(status=discord.Status.online, activity=game)
     print("Бот запущен!")
-
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
     print('Ready.')
     print('------------')
 
-token = os.environ.get("TOKEN")
-bot.run(str(token))
+#token = os.environ.get("TOKEN")
+#bot.run(str(token))
 
+
+
+bot.run('NjcyMjExNDE2OTQxNDYxNTA1.XrxBjg.-QcvR5ujO3hrBes-6uoxS-oi4po')

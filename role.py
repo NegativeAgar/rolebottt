@@ -97,7 +97,8 @@ async def kick(ctx, user:discord.Member,*,reason=None):
         emb.set_thumbnail(url=str(user.avatar_url))
         emb.set_footer(text=time_string)
         await channel.send(embed=emb)
-
+    else:
+        return
 @bot.command()
 async def gunban(ctx, user:discord.abc.User):
     channel = bot.get_channel(710559011505700945)
@@ -146,7 +147,8 @@ async def mute(ctx, user:discord.Member,*,time1=120.00):
         emb.set_footer(text='{}'.format(time_string))
         await channel.send(embed=emb)
         await user.remove_roles(role)
-
+    else:
+        return
 @bot.command()
 async def unmute(ctx,user:discord.Member):
     author = ctx.author
@@ -162,7 +164,7 @@ async def unmute(ctx,user:discord.Member):
         await channel.send(embed=emb)
         await user.remove_roles(role)
     else:
-        print('отказано')
+        return
 
 reacit = [".ban",".mute",".kick",".unmute"]
 AntiMat = ["ПИДОР","ХУЙНЯ","ЕБАЛ","СДОХНИ","БЛЯДЬ","ХУЙЛО","ебал","нахуй","пизда","ПИЗДА","хуй"]
@@ -173,7 +175,9 @@ async def on_message(msg):
     channel = msg.channel
     role_names = [role.name for role in author.roles]
     if ("Модератор" in role_names):
-        return
+        for i in reacit:
+            if i in msg.content:
+                await msg.add_reaction('✅')
     else:
         for i in AntiMat:
             if i in msg.content:
@@ -182,19 +186,11 @@ async def on_message(msg):
                 await channel.send(message1)
 
 #anti lin
-    if ("Модератор" in role_names):
-        return
-    else:
-        for i in AntiLink:
-            if i in msg.content:
-                await msg.channel.purge(limit=1)
-                message1 = f'{author.mention} _**Ссылки запрещены!**_'
-                await channel.send(message1)
-
-#ban reaction
-    for i in reacit:
+    for i in AntiLink:
         if i in msg.content:
-            await msg.add_reaction('✅')
+            await msg.channel.purge(limit=1)
+            message1 = f'{author.mention} _**Ссылки запрещены!**_'
+            await channel.send(message1)
 
 
     await bot.process_commands(msg)
@@ -213,6 +209,3 @@ async def on_ready():
 
 token = os.environ.get("TOKEN")
 bot.run(str(token))
-
-
-

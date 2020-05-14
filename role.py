@@ -211,9 +211,8 @@ async def on_ready():
     print('Ready.')
     print('------------')
 
-#token = os.environ.get("TOKEN")
-#bot.run(str(token))
+token = os.environ.get("TOKEN")
+bot.run(str(token))
 
 
 
-bot.run('NjcyMjExNDE2OTQxNDYxNTA1.XrxBjg.-QcvR5ujO3hrBes-6uoxS-oi4po')

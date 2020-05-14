@@ -174,7 +174,7 @@ async def on_message(msg):
     author = msg.author
     channel = msg.channel
     role_names = [role.name for role in author.roles]
-    if ("Модератор" in role_names):
+    if ("Модератор" in role_names and "bot" in role_names ):
         for i in reacit:
             if i in msg.content:
                 await msg.add_reaction('✅')
@@ -184,13 +184,11 @@ async def on_message(msg):
                 await msg.channel.purge(limit=1)
                 message1 = f'{author.mention} _**Не ругайтесь!**_'
                 await channel.send(message1)
-
-#anti lin
-    for i in AntiLink:
-        if i in msg.content:
-            await msg.channel.purge(limit=1)
-            message1 = f'{author.mention} _**Ссылки запрещены!**_'
-            await channel.send(message1)
+                for i in AntiLink:
+                    if i in msg.content:
+                        await msg.channel.purge(limit=1)
+                        message2 = f'{author.mention} _**Ссылки запрещены!**_'
+                        await channel.send(message2)
 
 
     await bot.process_commands(msg)
@@ -206,6 +204,5 @@ async def on_ready():
     print(bot.user.id)
     print('Ready.')
     print('------------')
-
 token = os.environ.get("TOKEN")
 bot.run(str(token))

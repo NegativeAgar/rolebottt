@@ -179,18 +179,20 @@ async def on_message(msg):
             if i in msg.content:
                 await msg.add_reaction('✅')
     else:
+        for i in AntiLink:
+            if i in msg.content:
+                await msg.channel.purge(limit=1)
+                message2 = f'{author.mention} _**Ссылки запрещены!**_'
+                await channel.send(message2)
         for i in AntiMat:
             if i in msg.content:
                 await msg.channel.purge(limit=1)
                 message1 = f'{author.mention} _**Не ругайтесь!**_'
                 await channel.send(message1)
-                for i in AntiLink:
-                    if i in msg.content:
-                        await msg.channel.purge(limit=1)
-                        message2 = f'{author.mention} _**Ссылки запрещены!**_'
-                        await channel.send(message2)
-
-
+    for i in reacit:
+        if i in msg.content:
+            await msg.add_reaction('✅')
+            
     await bot.process_commands(msg)
 #end
 
@@ -204,5 +206,8 @@ async def on_ready():
     print(bot.user.id)
     print('Ready.')
     print('------------')
+
+
 token = os.environ.get("TOKEN")
 bot.run(str(token))
+

@@ -64,7 +64,8 @@ async def help(ctx):
         await ctx.channel.purge(limit=1)
         emb = discord.Embed(title="Помощь по боту", colour=discord.Colour.orange())
         emb.add_field(name='Команды:',value='`.info` - Посмотреть статистику (Упомянуть пользователя - "@")'
-                            '\n`.ip` - Сервер где играет Руха!', inline=False)
+                            '\n`.ip` - Сервер где играет Руха!'
+                            '\n`.rules` - Правила дискорд сервера', inline=False)
         await ctx.send(embed=emb)
 
 

@@ -77,7 +77,6 @@ async def info(ctx, user: discord.Member):
     await ctx.channel.purge(limit=1)
     emb.add_field(name='Имя:', value=user.name)
     emb.add_field(name="Зашёл на канал:", value=str(user.joined_at)[:10])
-    #emb.add_field(name='Статус:', value=user.status)
     emb.add_field(name='ID пользователя:', value=user.id, inline=False)
     emb.set_thumbnail(url=str(user.avatar_url))
     emb.set_footer(text='Смотрит {}'.format(ctx.author.name), icon_url=ctx.author.avatar_url)
@@ -126,7 +125,7 @@ async def ban(ctx, user:discord.Member,*,reason=None):
 
 
 @bot.command()
-async def mute(ctx, user:discord.Member,*,time1=120.00):
+async def mute(ctx, user:discord.Member,*,time1=120):
     author = ctx.author
     role_names = [role.name for role in author.roles]
     if ("Модератор" in role_names):
@@ -135,12 +134,12 @@ async def mute(ctx, user:discord.Member,*,time1=120.00):
         await user.add_roles(role)
         emb = discord.Embed(title="{} заглушен".format(user.name), colour=discord.Colour.red())
         emb.add_field(name='ID пользователя:', value="{}".format(user.id))
-        emb.add_field(name='Длительность:', value="{} секунд".format(time1))
+        emb.add_field(name='Длительность:', value="{} секунд".format(time1)[:1])
         emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
         emb.set_thumbnail(url=str(user.avatar_url))
         emb.set_footer(text='{}'.format(time_string))
         await channel.send(embed=emb)
-        time.sleep(time1)
+        time.sleep(time1/60)
         emb = discord.Embed(title="{} заглушка снята".format(user.name), colour=discord.Colour.orange())
         emb.add_field(name='ID пользователя:', value="{}".format(user.id))
         emb.add_field(name='Модератор', value="Auto")
@@ -154,22 +153,25 @@ async def mute(ctx, user:discord.Member,*,time1=120.00):
 async def unmute(ctx,user:discord.Member):
     author = ctx.author
     role_names = [role.name for role in author.roles]
-    if ("Модератор" in role_names):
-        channel = bot.get_channel(710559011505700945)
-        role = discord.utils.get(user.guild.roles, id=710558272846823518)
-        emb = discord.Embed(title="{} заглушка снята".format(user.name), colour=discord.Colour.orange())
-        emb.add_field(name='ID пользователя:', value="{}".format(user.id))
-        emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
-        emb.set_thumbnail(url=str(user.avatar_url))
-        emb.set_footer(text=time_string)
-        await channel.send(embed=emb)
-        await user.remove_roles(role)
+    if ("mute" in role_names):
+        if ("Модератор" in role_names):
+            channel = bot.get_channel(710559011505700945)
+            role = discord.utils.get(user.guild.roles, id=710558272846823518)
+            emb = discord.Embed(title="{} заглушка снята".format(user.name), colour=discord.Colour.orange())
+            emb.add_field(name='ID пользователя:', value="{}".format(user.id))
+            emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
+            emb.set_thumbnail(url=str(user.avatar_url))
+            emb.set_footer(text=time_string)
+            await channel.send(embed=emb)
+            await user.remove_roles(role)
+        else:
+            return
     else:
-        return
+        sendd =f'{author.mention} _**Пользователь не заглушен!**_'
+        await ctx.send(sendd)
 
 #rules
 @bot.command()
-@commands.has_permissions(administrator=True)
 async def rules(ctx):
     emb = discord.Embed(title='Правила поведения в дискорде',colour=discord.Colour.orange())
     emb.description ='● Не нарушайте правила и ведите себя хорошо' \
@@ -236,7 +238,6 @@ async def on_ready():
     print(bot.user.id)
     print('Ready.')
     print('------------')
-
 token = os.environ.get("TOKEN")
 bot.run(str(token))
 

@@ -120,7 +120,7 @@ async def ban(ctx, user:discord.Member,*,reason=None):
         emb.add_field(name='ID пользователя:', value=user.id)
         emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
         emb.set_thumbnail(url=str(user.avatar_url))
-        emb.set_footer(text='{}'.format(time_string))a
+        emb.set_footer(text='{}'.format(time_string))
         await channel.send(embed=emb)
 
 

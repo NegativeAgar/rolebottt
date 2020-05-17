@@ -120,7 +120,7 @@ async def ban(ctx, user:discord.Member,*,reason=None):
         emb.add_field(name='ID пользователя:', value=user.id)
         emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
         emb.set_thumbnail(url=str(user.avatar_url))
-        emb.set_footer(text='{}'.format(time_string))
+        emb.set_footer(text='{}'.format(time_string))a
         await channel.send(embed=emb)
 
 
@@ -134,8 +134,8 @@ async def mute(ctx, user:discord.Member,*,time1=120):
         await user.add_roles(role)
         emb = discord.Embed(title="{} заглушен".format(user.name), colour=discord.Colour.red())
         emb.add_field(name='ID пользователя:', value="{}".format(user.id))
-        mes = 'секунд'
-        emb.add_field(name='Длительность:', value=time1[:1]+str(mes))
+        mes = time1[:1]
+        emb.add_field(name='Длительность:', value='{} секунд'.format(mes))
         emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
         emb.set_thumbnail(url=str(user.avatar_url))
         emb.set_footer(text='{}'.format(time_string))

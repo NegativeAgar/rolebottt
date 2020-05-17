@@ -31,7 +31,7 @@ async def clear(ctx, count=20):
 @bot.command()
 async def ip(ctx):
         author = ctx.author
-        await ctx.send(f"Вот держи {author.mention}! SanTrope #02 - `51.83.146.10:8888`, сервер где играет Руха, скорее залетай к нему!")
+        await ctx.send(f"Вот держи {author.mention}! SanTrope #02 - `51.83.146.10:8888`, сервер где играет Руха, вводи его промокод #LOVERUHA, и получешь свои первые деньги!")
 
 
 
@@ -134,7 +134,8 @@ async def mute(ctx, user:discord.Member,*,time1=120):
         await user.add_roles(role)
         emb = discord.Embed(title="{} заглушен".format(user.name), colour=discord.Colour.red())
         emb.add_field(name='ID пользователя:', value="{}".format(user.id))
-        emb.add_field(name='Длительность:', value="{} секунд".format(time1)[:1])
+        mes = 'секунд'
+        emb.add_field(name='Длительность:', value=time1[:1]+str(mes))
         emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
         emb.set_thumbnail(url=str(user.avatar_url))
         emb.set_footer(text='{}'.format(time_string))

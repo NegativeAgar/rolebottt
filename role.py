@@ -44,7 +44,7 @@ async def on_member_remove(user: discord.Member):
 # Подключение к каналу
 @bot.event
 async def on_member_join(member: discord.Member):
-    channel = bot.get_channel(709874537688465539)
+    channel = bot.get_channel(687640950931193866)
     role = discord.utils.get(member.guild.roles, id=670271810079555584)
     await member.add_roles(role)
     emb = discord.Embed(title="Приветствуем тебя на Discrod сервере Ruh'i", colour=discord.Colour.orange())

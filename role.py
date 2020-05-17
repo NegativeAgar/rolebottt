@@ -134,7 +134,7 @@ async def mute(ctx, user:discord.Member,*,time1=120):
         await user.add_roles(role)
         emb = discord.Embed(title="{} заглушен".format(user.name), colour=discord.Colour.red())
         emb.add_field(name='ID пользователя:', value="{}".format(user.id))
-        emb.add_field(name='Длительность:', value='{} секунд'.format(time1)[:1])
+        emb.add_field(name='Длительность:', value=time1[:1])
         emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
         emb.set_thumbnail(url=str(user.avatar_url))
         emb.set_footer(text='{}'.format(time_string))

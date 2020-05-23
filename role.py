@@ -134,12 +134,12 @@ async def mute(ctx, user:discord.Member,*,time1=120):
         await user.add_roles(role)
         emb = discord.Embed(title="{} заглушен".format(user.name), colour=discord.Colour.red())
         emb.add_field(name='ID пользователя:', value="{}".format(user.id))
-        emb.add_field(name='Длительность:', value=time1[:1])
+        emb.add_field(name='Длительность:', value='{} минут'.format(int(time1)))
         emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
         emb.set_thumbnail(url=str(user.avatar_url))
         emb.set_footer(text='{}'.format(time_string))
         await channel.send(embed=emb)
-        time.sleep(time1/60)
+        time.sleep(time1*60)
         emb = discord.Embed(title="{} заглушка снята".format(user.name), colour=discord.Colour.orange())
         emb.add_field(name='ID пользователя:', value="{}".format(user.id))
         emb.add_field(name='Модератор', value="Auto")
@@ -238,7 +238,3 @@ async def on_ready():
     print(bot.user.id)
     print('Ready.')
     print('------------')
-token = os.environ.get("TOKEN")
-bot.run(str(token))
-
-

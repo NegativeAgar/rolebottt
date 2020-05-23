@@ -238,3 +238,6 @@ async def on_ready():
     print(bot.user.id)
     print('Ready.')
     print('------------')
+token = os.environ.get("TOKEN")
+bot.run(str(token))
+

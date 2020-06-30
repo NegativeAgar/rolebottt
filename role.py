@@ -1,4 +1,5 @@
 # Бот подписчик
+# Бот подписчик
 import discord
 from discord.ext import commands
 import asyncio
@@ -39,16 +40,18 @@ async def ip(ctx):
 @bot.event
 async def on_member_remove(user: discord.Member):
     channel = bot.get_channel(687640950931193866)
-    await channel.send(embed=discord.Embed(description=f'Нас покинул `{user.name}`, Руха растроился :(',color=discord.Colour.red()))
-
+    emb = discord.Embed(color=discord.Colour.red())
+    emb.set_author(name=f' {user.name}#{user.discriminator}, отошел в преисподнюю',icon_url=user.avatar_url)
+    await channel.send(embed=emb)
 # Подключение к каналу
 @bot.event
 async def on_member_join(member: discord.Member):
     channel = bot.get_channel(687640950931193866)
     role = discord.utils.get(member.guild.roles, id=670271810079555584)
     await member.add_roles(role)
-    emb = discord.Embed(title="Приветствуем тебя на Discrod сервере Ruh'i", colour=discord.Colour.orange())
-    emb.add_field(name='Welcom!',value='Рады видеть тебя здесь {} 🤚'.format(member.mention),inline=False)
+    emb = discord.Embed(colour=discord.Colour.orange())
+    emb.set_author(name='У нас пополнение!',icon_url=member.avatar_url)
+    emb.add_field(name='Welcome!',value='Рады видеть тебя здесь {} 🤚'.format(member.mention),inline=False)
     emb.add_field(name='Информация',value='● Пожалуйста, прочитайте наши `#правила`'
                   '\n● Выберите сервер на котором, вы играете `#сервер`'
                   "\n● Посмотреть новые видео Ruh'i `#news`"
@@ -246,3 +249,5 @@ async def on_ready():
     print(bot.user.id)
     print('Ready.')
     print('------------')
+token = os.environ.get("TOKEN")
+bot.run(str(token))

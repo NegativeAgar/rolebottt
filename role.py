@@ -4,6 +4,7 @@ from discord.ext import commands
 import asyncio
 import random
 import time
+from datetime import datetime
 import os
 
 
@@ -19,11 +20,10 @@ bot.remove_command('help')
 
 # clear
 @bot.command()
-@commands.has_permissions(administrator=True)
 async def clear(ctx, count=20):
     author = ctx.message.author
     await ctx.channel.purge(limit=count)
-    await ctx.send(embed=discord.Embed(description=f'Чат очистил администратор: {author.mention}'))
+    await ctx.send(embed=discord.Embed(description=f'✅ Очищено {count} сообщений.'))
     time.sleep(3.0)
     await ctx.channel.purge(limit=1)
 
@@ -31,7 +31,7 @@ async def clear(ctx, count=20):
 @bot.command()
 async def ip(ctx):
         author = ctx.author
-        await ctx.send(f"Вот держи {author.mention}! SanTrope #02 - `51.83.146.10:8888`, сервер где играет Руха, вводи его промокод #LOVERUHA, и получешь свои первые деньги!")
+        await ctx.send(f"Вот держи {author.mention}! SanTrope #02 - `51.77.32.196:7777`, сервер где играет Руха, вводи его промокод #LOVERUHA, и получешь свои первые деньги!")
 
 
 
@@ -64,8 +64,7 @@ async def help(ctx):
         await ctx.channel.purge(limit=1)
         emb = discord.Embed(title="Помощь по боту", colour=discord.Colour.orange())
         emb.add_field(name='Команды:',value='`.info` - Посмотреть статистику (Упомянуть пользователя - "@")'
-                            '\n`.ip` - Сервер где играет Руха!'
-                            '\n`.rules` - Правила дискорд сервера', inline=False)
+                            '\n`.ip` - Сервер где играет Руха!')
         await ctx.send(embed=emb)
 
 
@@ -89,13 +88,16 @@ async def kick(ctx, user:discord.Member,*,reason=None):
     role_names = [role.name for role in author.roles]
     if ("Модератор" in role_names):
         channel = bot.get_channel(710559011505700945)
+        #ответ модеру
+        emb = discord.Embed(colour=discord.Colour.red())
+        emb.set_author(name=f'{user.name}#{user.discriminator}  исключен', icon_url=user.avatar_url)
+        emb.set_footer(text=f' Модератером {ctx.author.name}')
+        await ctx.send(embed=emb)
+        #logs
+        emb = discord.Embed(colour=discord.Colour.red())
+        emb.set_author(name=f'{user.name}#{user.discriminator}  исключен', icon_url=user.avatar_url)
+        emb.set_footer(text=f' Модератером {ctx.author.name}')
         await user.kick(reason=reason)
-        emb = discord.Embed(title="`{}` исключен".format(user.name), colour=discord.Colour.red())
-        emb.add_field(name="Причина:", value=reason,inline=False)
-        emb.add_field(name='ID пользователя:', value=user.id)
-        emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
-        emb.set_thumbnail(url=str(user.avatar_url))
-        emb.set_footer(text=time_string)
         await channel.send(embed=emb)
     else:
         return
@@ -113,19 +115,25 @@ async def gunban(ctx, user:discord.abc.User):
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def ban(ctx, user:discord.Member,*,reason=None):
-        await user.ban(reason=reason, delete_message_days=1)
-        channel = bot.get_channel(710559011505700945)
-        emb = discord.Embed(title="`{}` забанен".format(user.name), colour=discord.Colour.red())
-        emb.add_field(name="Причина:", value=reason,inline=False)
-        emb.add_field(name='ID пользователя:', value=user.id)
-        emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
-        emb.set_thumbnail(url=str(user.avatar_url))
-        emb.set_footer(text='{}'.format(time_string))
-        await channel.send(embed=emb)
+    channel = bot.get_channel(710559011505700945)
+    #answer
+    emb = discord.Embed(colour=discord.Colour.red())
+    emb.set_author(name=f'{user.name}#{user.discriminator} заблокирован', icon_url=user.avatar_url)
+    emb.set_footer(text=f' Модератером {ctx.author.name}')
+    await ctx.send(embed=emb)
+    #log
+    emb = discord.Embed(colour=discord.Colour.red())
+    emb.set_author(name='Заблокирован', icon_url=user.avatar_url)
+    emb.add_field(name="Пользователь", value=f'{user.name}#{user.discriminator}')
+    emb.add_field(name='ID', value=user.id)
+    emb.add_field(name='Модератор', value=ctx.author.name)
+    emb.add_field(name='Причина', value=reason,inline=False)
+    await user.ban(reason=reason, delete_message_days=1)
+    await channel.send(embed=emb)
 
 
 @bot.command()
-async def mute(ctx, user:discord.Member,*,time1=120):
+async def mute11(ctx, user:discord.Member,*,time1=120):
     author = ctx.author
     role_names = [role.name for role in author.roles]
     if ("Модератор" in role_names):
@@ -150,7 +158,7 @@ async def mute(ctx, user:discord.Member,*,time1=120):
     else:
         return
 @bot.command()
-async def unmute(ctx,user:discord.Member):
+async def unmute11(ctx,user:discord.Member):
     author = ctx.author
     role_names = [role.name for role in author.roles]
     if ("mute" in role_names):
@@ -199,7 +207,7 @@ async def rules(ctx):
 
 
 
-reacit = [".ban",".mute",".kick",".unmute"]
+reacit = [".ban",".mute11",".kick",".unmute11"]
 AntiMat = ["ПИДОР","ХУЙНЯ","ЕБАЛ","СДОХНИ","БЛЯДЬ","ХУЙЛО","ебал","нахуй","пизда","ПИЗДА","хуй"]
 AntiLink = ["https://","http://"]
 @bot.event
@@ -238,6 +246,3 @@ async def on_ready():
     print(bot.user.id)
     print('Ready.')
     print('------------')
-token = os.environ.get("TOKEN")
-bot.run(str(token))
-

@@ -54,7 +54,7 @@ async def on_member_join(member: discord.Member):
     emb.add_field(name='Welcome!',value='Рады видеть тебя здесь {} 🤚'.format(member.mention),inline=False)
     emb.add_field(name='Информация',value='● Пожалуйста, прочитайте наши `#правила`'
                   '\n● Выберите сервер на котором, вы играете `#сервер`'
-                  "\n● Посмотреть новые видео Ruh'i `#news`"
+                  "\n● Посмотреть новые видео loveruh'i`#news`"
                   "\n● Заходи на канал `#chat` и общайся",inline=False)
     emb.add_field(name='Нужна помощь?',value='Пишите в раздел `#помощь`')
     await channel.send(embed=emb)
@@ -239,6 +239,14 @@ async def on_message(msg):
     await bot.process_commands(msg)
 #end
 
+@bot.command(aliases = ['v'])
+async def video(ctx,link=None):
+	    await ctx.channel.purge(limit=1)
+	    ch1 = bot.get_channel(670270944828456971)
+	    ch2 = bot.get_channel(658746681172688900)
+	    #await ctx.send(embed=discord.Embed(description='У loveruha вышел новый видеоролик! Быстрее залетай, ставь лайк и пиши комментарий, чтобы получить свою заветную соточку рублей. \n'+link + ' @everyone ',colour=discord.Colour.red()))
+	    await ch1.send('У **loveruha** вышел новый видеоролик! Быстрее залетай, ставь лайк и пиши комментарий, чтобы получить свою заветную соточку рублей. \n'+link + ' @everyone')
+	    await ch2.send('У **loveruha** вышел новый видеоролик! Быстрее залетай, ставь лайк и пиши комментарий, чтобы получить свою заветную соточку рублей. \n'+link + ' @everyone')
 @bot.event
 async def on_ready():
     game = discord.Game("Помощь [.help] ")
@@ -249,5 +257,6 @@ async def on_ready():
     print(bot.user.id)
     print('Ready.')
     print('------------')
+
 token = os.environ.get("TOKEN")
 bot.run(str(token))

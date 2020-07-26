@@ -32,7 +32,7 @@ async def clear(ctx, count=20):
 @bot.command()
 async def ip(ctx):
         author = ctx.author
-        await ctx.send(f"Вот держи {author.mention}! SanTrope #02 - `51.77.32.196:7777`, сервер где играет Руха, вводи его промокод #LOVERUHA, и получешь свои первые деньги!")
+        await ctx.send(f"Вот держи {author.mention}! SanTrope #02 - `51.77.32.196:7777`, сервер где играет loveruha, вводи его промокод #LOVERUHA, и получешь свои первые деньги!")
 
 
 
@@ -67,7 +67,7 @@ async def help(ctx):
         await ctx.channel.purge(limit=1)
         emb = discord.Embed(title="Помощь по боту", colour=discord.Colour.orange())
         emb.add_field(name='Команды:',value='`.info` - Посмотреть статистику (Упомянуть пользователя - "@")'
-                            '\n`.ip` - Сервер где играет Руха!')
+                            '\n`.ip` - Сервер где играет loveruha!')
         await ctx.send(embed=emb)
 
 

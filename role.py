@@ -134,32 +134,36 @@ async def ban(ctx, user:discord.Member,*,reason=None):
     await user.ban(reason=reason, delete_message_days=1)
     await channel.send(embed=emb)
 
-
 @bot.command()
-async def mute11(ctx, user:discord.Member,*,time1=120):
-    author = ctx.author
-    role_names = [role.name for role in author.roles]
-    if ("Модератор" in role_names):
-        role = discord.utils.get(user.guild.roles, id=710558272846823518)
-        channel = bot.get_channel(710559011505700945)
-        await user.add_roles(role)
-        emb = discord.Embed(title="{} заглушен".format(user.name), colour=discord.Colour.red())
-        emb.add_field(name='ID пользователя:', value="{}".format(user.id))
-        emb.add_field(name='Длительность:', value='{} минут'.format(int(time1)))
-        emb.add_field(name='Модератор', value="{}".format(ctx.author.name),inline=False)
-        emb.set_thumbnail(url=str(user.avatar_url))
-        emb.set_footer(text='{}'.format(time_string))
-        await channel.send(embed=emb)
-        time.sleep(time1*60)
-        emb = discord.Embed(title="{} заглушка снята".format(user.name), colour=discord.Colour.orange())
-        emb.add_field(name='ID пользователя:', value="{}".format(user.id))
-        emb.add_field(name='Модератор', value="Auto")
-        emb.set_thumbnail(url=str(user.avatar_url))
-        emb.set_footer(text='{}'.format(time_string))
-        await channel.send(embed=emb)
-        await user.remove_roles(role)
-    else:
-        return
+async def mute(ctx, member: discord.Member, time1: int, *, reason: str = None):
+        author = ctx.author
+        role_names = [role.name for role in author.roles]
+        if ("Модератор" in role_names):
+            emb = discord.Embed(colour=discord.Colour.red())
+            emb.set_author(name=f'{member.name}#{member.discriminator}` получил блокировку чата на `{time1}м`', icon_url=member.avatar_url)
+            await ctx.send(embed=emb)
+            #answr
+            role = discord.utils.get(member.guild.roles, id=710558272846823518)
+            channel = bot.get_channel(710559011505700945)
+            await member.add_roles(role)
+            emb = discord.Embed(title="{} заглушен".format(member.name), colour=discord.Colour.red())
+            emb.add_field(name='ID пользователя:', value="{}".format(member.id))
+            emb.add_field(name='Длительность:', value='{} минут'.format(time1))
+            emb.add_field(name='Модератор:', value="{}".format(ctx.author.name),inline=False)
+            emb.add_field(name='Причина:', value="{}".format(reason),inline=False)
+            emb.set_thumbnail(url=str(member.avatar_url))
+            emb.set_footer(text='{}'.format(time_string))
+            await channel.send(embed=emb)
+            await asyncio.sleep(time1*60)
+            emb = discord.Embed(title="{} заглушка снята".format(member.name), colour=discord.Colour.orange())
+            emb.add_field(name='ID пользователя:', value="{}".format(member.id))
+            emb.add_field(name='Модератор:', value="Auto")
+            emb.set_thumbnail(url=str(member.avatar_url))
+            emb.set_footer(text='{}'.format(time_string))
+            await channel.send(embed=emb)
+            await member.remove_roles(role)
+        else:
+            passs
 @bot.command()
 async def unmute11(ctx,user:discord.Member):
     author = ctx.author

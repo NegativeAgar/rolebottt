@@ -44,3 +44,5 @@ async def on_message(msg):
 				await h1.send(embed=discord.Embed(description='**Пользователь** '+ str(author) +' пытался вставить ссылку!!!\n **Сообщение:** '+str(msg.content),colour=discord.Colour.red()))
 			else:
 				pass
+token = os.environ.get("TOKEN")
+bot.run(str(token))

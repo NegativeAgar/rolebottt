@@ -4,9 +4,7 @@ from discord.ext import commands
 import asyncio
 import random
 import os
-import sqlite3
-import io 
-import requests
+
 
 
 
